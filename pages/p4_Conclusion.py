@@ -74,7 +74,7 @@ def show_conclusions():
         - Electricity markets are strongly autoregressive due to:  
           - Generator commitment decisions  
           - Cross-border trading patterns  
-        - Weather acts as secondary modifier to core market dynamics.  
+        - Weather acts as secondary modifier to core market dynamics.""")
 
     # Section 4: Model Validation
     with st.expander("4. Model Validation"):
