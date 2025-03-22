@@ -32,7 +32,7 @@ def main():
         st.header("Numerical Variables Analysis")
         col1, col2 = st.columns(2)
         with col1:
-            var = st.selectbox("Select Numerical Variable", num_cols)
+            var = st.selectbox("Select Numerical Variable", numerical_columns)
             fig = px.box(df, x=var, title=f"Boxplot of {var}")
             st.plotly_chart(fig, use_container_width=True)
         
