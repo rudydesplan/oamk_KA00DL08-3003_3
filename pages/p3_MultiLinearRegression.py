@@ -85,7 +85,7 @@ def main():
         y_test = y.iloc[split_idx:]
 
         # --------------------------
-        # TASK 1: VIF Results
+        # VIF Results
         # --------------------------
         st.header("Multicollinearity Analysis (VIF)")
         vif_results = calculate_vif(X_train)
@@ -107,7 +107,7 @@ def main():
             st.markdown("*Note: High VIF values indicate collinear features that may need investigation*")
             
         # --------------------------
-        # TASK 2: Model Metrics
+        # Model Metrics
         # --------------------------
         st.header("Model Performance")
         
@@ -163,7 +163,7 @@ def main():
                      delta=f"{metrics_df.loc['Testing','R²'] - metrics_df.loc['Training','R²']:.2f}")
 
         # --------------------------
-        # TASK 3: Statsmodels Summary
+        # Statsmodels Summary
         # --------------------------
         st.header("Regression Summary")
         
@@ -176,6 +176,41 @@ def main():
                         value=summary,
                         height=800,
                         disabled=True)
+
+        # --------------------------
+        # Actual vs Predicted Plot
+        # --------------------------
+        st.header("Prediction Visualization")
+        
+        # Create dataframe with test results
+        results_df = pd.DataFrame({
+            'Time': fmi_data.loc[y_test.index, 'Time'],
+            'Actual': y_test,
+            'Predicted': y_pred_test
+        }).set_index('Time')
+
+        # Create interactive plot
+        fig = px.line(results_df, 
+                     x=results_df.index, 
+                     y=['Actual', 'Predicted'],
+                     title='Actual vs Predicted Electricity Prices (Test Set)',
+                     labels={'value': 'Price', 'variable': 'Legend'},
+                     color_discrete_map={'Actual': 'blue', 'Predicted': 'red'})
+        
+        # Customize plot appearance
+        fig.update_layout(
+            xaxis_title='Time',
+            yaxis_title='Price (€)',
+            legend_title='',
+            hovermode='x unified',
+            showlegend=True,
+            template='plotly_white'
+        )
+        
+        # Add dashed line for predictions
+        fig.for_each_trace(lambda t: t.update(line=dict(dash='dash')) if t.name == 'Predicted' else None
+        
+        st.plotly_chart(fig, use_container_width=True)
 
     except Exception as e:
         st.error(f"Error in modeling: {str(e)}")
