@@ -41,6 +41,22 @@ def main():
             fig.add_vline(x=fmi_data[var].mean(), line_dash="dash", line_color="red")
             st.plotly_chart(fig, use_container_width=True)
 
+        # --------------------------
+        # Bivariate Analysis
+        # --------------------------
+        st.header("Bivariate Analysis")
+        col1 = st.columns(1)
+        
+        with col1:
+            num_feat = st.selectbox("Select Numerical Feature", 
+                                   [c for c in numerical_columns if c != 'Price'])
+            fig = px.scatter(df, 
+                            x=num_feat, 
+                            y='Price', 
+                            trendline="lowess",
+                            title=f"Price vs {num_feat}")
+            st.plotly_chart(fig, use_container_width=True)
+
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
 
