@@ -14,7 +14,7 @@ def main():
     
     try:
         fmi_data = load_data()
-        
+
         # --------------------------
         # 1. Numerical Descriptive Stats
         # --------------------------
@@ -30,6 +30,9 @@ def main():
         # Numerical Analysis
         # --------------------------
         st.header("Numerical Variables Analysis")
+
+        edges = np.histogram_bin_edges(fmi_data, bins='auto')
+        
         col1, col2 = st.columns(2)
         with col1:
             var = st.selectbox("Select Numerical Variable", numerical_columns)
@@ -37,7 +40,7 @@ def main():
             st.plotly_chart(fig, use_container_width=True)
         
         with col2:
-            fig = px.histogram(fmi_data, x=var, nbins=30, title=f"Distribution of {var}")
+            fig = px.histogram(fmi_data, x=var, nbins=len(edges)-1, title=f"Distribution of {var}")
             fig.add_vline(x=fmi_data[var].mean(), line_dash="dash", line_color="red")
             st.plotly_chart(fig, use_container_width=True)
 
