@@ -26,5 +26,8 @@ def main():
                     height=600,
                     use_container_width=True)
 
+    except Exception as e:
+        st.error(f"Error loading data: {str(e)}")
+
 if __name__ == "__main__":
     main()
