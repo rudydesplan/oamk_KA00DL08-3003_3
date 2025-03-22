@@ -21,7 +21,7 @@ def main():
         st.header("Numerical Descriptive Statistics")
         numerical_columns = fmi_data.drop(columns=['Time']).columns
       
-        numeric_descriptive_stats = numerical_columns.describe().T
+        numeric_descriptive_stats = fmi_data.drop(columns=['Time']).describe().T
         st.dataframe(numeric_descriptive_stats.style.format("{:.2f}"), 
                     height=500,
                     use_container_width=True)
