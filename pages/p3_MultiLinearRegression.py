@@ -208,7 +208,7 @@ def main():
         )
         
         # Add dashed line for predictions
-        fig.for_each_trace(lambda t: t.update(line=dict(dash='dash')) if t.name == 'Predicted' else None
+        fig.for_each_trace(lambda t: t.update(line=dict(dash='dash')) if t.name == 'Predicted' else None)
         
         st.plotly_chart(fig, use_container_width=True)
 
