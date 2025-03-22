@@ -89,7 +89,7 @@ def show_conclusions():
     # Final Conclusion
     st.header("Overall Conclusion", divider='rainbow')
     conclusion = """
-    Weather conditions **modify but don't dominate** Finnish electricity prices:
+    Weather conditions **modify but do not dominate** Finnish electricity prices:
     
     1. **Primary Drivers**:  
        - Market dynamics (85% variance)  
