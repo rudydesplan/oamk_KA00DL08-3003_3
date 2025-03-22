@@ -33,12 +33,12 @@ def main():
         col1, col2 = st.columns(2)
         with col1:
             var = st.selectbox("Select Numerical Variable", numerical_columns)
-            fig = px.box(df, x=var, title=f"Boxplot of {var}")
+            fig = px.box(fmi_data, x=var, title=f"Boxplot of {var}")
             st.plotly_chart(fig, use_container_width=True)
         
         with col2:
-            fig = px.histogram(df, x=var, nbins=30, title=f"Distribution of {var}")
-            fig.add_vline(x=df[var].mean(), line_dash="dash", line_color="red")
+            fig = px.histogram(fmi_data, x=var, nbins=30, title=f"Distribution of {var}")
+            fig.add_vline(x=fmi_data[var].mean(), line_dash="dash", line_color="red")
             st.plotly_chart(fig, use_container_width=True)
 
     except Exception as e:
