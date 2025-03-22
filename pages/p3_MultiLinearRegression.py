@@ -90,23 +90,22 @@ def main():
         st.header("Multicollinearity Analysis (VIF)")
         vif_results = calculate_vif(X_train)
         
-        col1, col2 = st.columns([1, 3])
+        col1, col2 = st.columns([2, 1])  # Adjusted column ratio
         with col1:
-            st.dataframe(vif_results.style.format({"VIF": "{:.1f}"}),
-                        height=600,
-                        use_container_width=True)
+            st.dataframe(
+                vif_results.style.format({"VIF": "{:.1f}"}),
+                height=600,
+                use_container_width=True
+            )
+        
         with col2:
             st.markdown("**VIF Interpretation Guide:**")
             st.markdown("- VIF < 5: Low multicollinearity")
             st.markdown("- 5 ≤ VIF < 10: Moderate multicollinearity")
             st.markdown("- VIF ≥ 10: High multicollinearity")
-            st.plotly_chart(ff.create_annotated_heatmap(
-                z=vif_results[['VIF']].T.values,
-                x=vif_results['Feature'].tolist(),
-                colorscale='Plasma',
-                showscale=True
-            ), use_container_width=True)
-
+            st.markdown("\n")  # Add some spacing
+            st.markdown("*Note: High VIF values indicate collinear features that may need investigation*")
+            
         # --------------------------
         # TASK 2: Model Metrics
         # --------------------------
