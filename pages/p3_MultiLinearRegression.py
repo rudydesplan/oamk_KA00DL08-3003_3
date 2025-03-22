@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import plotly.express as px
 import plotly.figure_factory as ff
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 import statsmodels.api as sm
