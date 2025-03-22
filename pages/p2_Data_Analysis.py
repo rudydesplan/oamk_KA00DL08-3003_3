@@ -92,7 +92,38 @@ def main():
                                                   title=f"Non-Zero {selected_var} Distribution")
                         st.plotly_chart(fig_non_zero, use_container_width=True)
 
+
+        # Bivariate Analysis
+        # --------------------------
+        st.header("Bivariate Analysis")
+        selected_feature = st.selectbox("Select Numerical Feature", 
+                                       [col for col in numerical_columns if col != 'Price'])
         
+        # Filter data for zero-inflated variables
+        if selected_feature in ['rain (mm)', 'snowfall (cm)']:
+            filtered_data = fmi_data[fmi_data[selected_feature] > 0]
+            enough_data = len(filtered_data) >= 10
+        else:
+            filtered_data = fmi_data
+            enough_data = True
+
+        # Create scatter plot with conditional parameters
+        fig = px.scatter(
+            filtered_data,
+            x=selected_feature,
+            y='Price',
+            title=f"Price vs {selected_feature} {'(Non-Zero Values)' if selected_feature in ['rain (mm)', 'snowfall (cm)'] else ''}",
+            trendline="lowess" if enough_data else None,
+            trendline_color_override="red",
+            labels={'Price': 'Price (€)', selected_feature: selected_feature},
+            log_x=selected_feature in (log_scale_vars + ['rain (mm)', 'snowfall (cm)'])
+        )
+        
+        if selected_feature in ['rain (mm)', 'snowfall (cm)'] and not enough_data:
+            st.warning("Insufficient non-zero data points for trendline calculation")
+            
+        st.plotly_chart(fig, use_container_width=True)
+
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
 
