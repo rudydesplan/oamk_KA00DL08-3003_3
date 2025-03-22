@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
+import plotly.figure_factory as ff
 
 @st.cache_data
 def load_data():
@@ -123,6 +124,51 @@ def main():
             st.warning("Insufficient non-zero data points for trendline calculation")
             
         st.plotly_chart(fig, use_container_width=True)
+
+
+        # --------------------------
+        # Correlation Analysis
+        # --------------------------
+        st.header("Correlation Analysis")
+        
+        # Create copy without Time column
+        fmi_data_copy = fmi_data.drop(columns=['Time'])
+        
+        # Compute correlation matrix
+        corr_matrix = fmi_data_copy.corr()
+        
+        # Create annotated heatmap
+        heatmap_figure = ff.create_annotated_heatmap(
+            z=corr_matrix.values,
+            x=corr_matrix.columns.tolist(),
+            y=corr_matrix.index.tolist(),
+            annotation_text=corr_matrix.round(2).values,
+            colorscale='Plasma',
+            showscale=True
+        )
+        
+        # Update layout
+        heatmap_figure.update_layout(
+            title={
+                'text': "Pearson Correlation Heatmap",
+                'x': 0.5,
+                'xanchor': 'center',
+                'yanchor': 'top'
+            },
+            xaxis=dict(
+                title="Variables",
+                tickangle=-45,
+                tickfont=dict(size=10)
+            ),
+            yaxis=dict(
+                title="Variables",
+                tickfont=dict(size=10)
+            ),
+            height=900
+        )
+        
+        st.plotly_chart(heatmap_figure, use_container_width=True)
+    
 
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
